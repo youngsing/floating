@@ -51,10 +51,11 @@ class Floating {
   //
   // This stream will call listeners only when the value changed.
   Stream<PiPStatus> get pipStatus$ {
-    _timer ??= Timer.periodic(
-      _probeInterval,
-      (_) async => _controller.add(await pipStatus),
-    );
+    _timer ??= Timer.periodic(_probeInterval, (_) async {
+      if (!_controller.isClosed) {
+        _controller.add(await pipStatus);
+      }
+    });
     _stream ??= _controller.stream.asBroadcastStream();
     return _stream!.distinct();
   }

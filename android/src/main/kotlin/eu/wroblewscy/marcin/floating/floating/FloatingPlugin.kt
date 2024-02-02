@@ -38,41 +38,44 @@ class FloatingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
   @RequiresApi(Build.VERSION_CODES.N)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "enablePip") {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val builder = PictureInPictureParams.Builder()
-          .setAspectRatio(
-            Rational(
-              call.argument("numerator") ?: 16,
-              call.argument("denominator") ?: 9
+    when (call.method) {
+      "enablePip" -> {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          val builder = PictureInPictureParams.Builder()
+            .setAspectRatio(
+              Rational(
+                call.argument("numerator") ?: 16,
+                call.argument("denominator") ?: 9
+              )
+            ).setAutoEnterEnabled(true)
+          val sourceRectHintLTRB = call.argument<List<Int>>("sourceRectHintLTRB")
+          if (sourceRectHintLTRB?.size == 4) {
+            val bounds = Rect(
+              sourceRectHintLTRB[0],
+              sourceRectHintLTRB[1],
+              sourceRectHintLTRB[2],
+              sourceRectHintLTRB[3]
             )
-          ).setAutoEnterEnabled(true)
-        val sourceRectHintLTRB = call.argument<List<Int>>("sourceRectHintLTRB")
-        if (sourceRectHintLTRB?.size == 4) {
-          val bounds = Rect(
-            sourceRectHintLTRB[0],
-            sourceRectHintLTRB[1],
-            sourceRectHintLTRB[2],
-            sourceRectHintLTRB[3]
-          )
-          builder.setSourceRectHint(bounds)
-        }
-        result.success(
+            builder.setSourceRectHint(bounds)
+          }
+          result.success(
             activity.enterPictureInPictureMode(builder.build())
-        )
-      } else {
-        result.success(activity.enterPictureInPictureMode())
+          )
+        } else {
+          result.success(activity.enterPictureInPictureMode())
+        }
       }
-    } else if (call.method == "pipAvailable") {
-      result.success(
+      "pipAvailable" -> {
+        result.success(
           activity.packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
-      )
-    } else if (call.method == "inPipAlready") {
-      result.success(
+        )
+      }
+      "inPipAlready" -> {
+        result.success(
           activity.isInPictureInPictureMode
-      )
-    } else {
-      result.notImplemented()
+        )
+      }
+      else -> result.notImplemented()
     }
   }
 

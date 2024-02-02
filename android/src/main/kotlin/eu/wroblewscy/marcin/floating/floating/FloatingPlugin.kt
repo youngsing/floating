@@ -46,7 +46,7 @@ class FloatingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
               call.argument("numerator") ?: 16,
               call.argument("denominator") ?: 9
             )
-          )
+          ).setAutoEnterEnabled(true)
         val sourceRectHintLTRB = call.argument<List<Int>>("sourceRectHintLTRB")
         if (sourceRectHintLTRB?.size == 4) {
           val bounds = Rect(

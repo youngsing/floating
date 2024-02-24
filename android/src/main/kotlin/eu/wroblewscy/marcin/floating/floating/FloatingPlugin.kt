@@ -36,7 +36,7 @@ class FloatingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     context = flutterPluginBinding.applicationContext
   }
 
-  @RequiresApi(Build.VERSION_CODES.O)
+  @RequiresApi(Build.VERSION_CODES.N)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "enablePip") {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

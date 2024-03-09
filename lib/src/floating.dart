@@ -64,7 +64,8 @@ class Floating {
   Stream<PiPStatus> get pipStatus$ {
     _timer ??= Timer.periodic(
       _probeInterval,
-      (_) async => _controller.add(await pipStatus),
+      (_) async =>
+          _controller.isClosed ? null : _controller.add(await pipStatus),
     );
     _stream ??= _controller.stream.asBroadcastStream();
     return _stream!.distinct();

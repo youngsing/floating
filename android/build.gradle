@@ -2,7 +2,7 @@ group 'eu.wroblewscy.marcin.floating.floating'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '2.2.0'
     repositories {
         google()
         mavenCentral()
@@ -30,7 +30,7 @@ android {
         namespace 'eu.wroblewscy.marcin.floating.floating'
     }
 
-    compileSdkVersion 31
+    compileSdkVersion 35
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
